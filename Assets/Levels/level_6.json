@@ -1,0 +1,77 @@
+﻿{
+  "moveCount": 12,
+  "boxes": [
+    {
+      "x": 1,
+      "y": 1,
+      "direction": "Right",
+      "color": "red"
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "direction": "Right",
+      "color": "blue"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "direction": "Down",
+      "color": "yellow"
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "direction": "Down",
+      "color": "green"
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "direction": "Right",
+      "color": "red"
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "direction": "Right",
+      "color": "blue"
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "direction": "Down",
+      "color": "yellow"
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "direction": "Up",
+      "color": "green"
+    },
+    {
+      "x": 1,
+      "y": 4,
+      "direction": "Right",
+      "color": "red"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "direction": "Down",
+      "color": "blue"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "direction": "Right",
+      "color": "green"
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "direction": "Down",
+      "color": "yellow"
+    }
+  ]
+}

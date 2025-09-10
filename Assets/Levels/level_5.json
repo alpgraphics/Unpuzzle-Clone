@@ -1,0 +1,101 @@
+﻿{
+  "moveCount": 18,
+  "boxes": [
+    {
+      "x": 3,
+      "y": 3,
+      "direction": "Right",
+      "color": "blue"
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "direction": "Down",
+      "color": "red"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "direction": "Left",
+      "color": "green"
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "direction": "Up",
+      "color": "yellow"
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "direction": "Down",
+      "color": "blue"
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "direction": "Right",
+      "color": "red"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "direction": "Left",
+      "color": "green"
+    },
+    {
+      "x": 2,
+      "y": 4,
+      "direction": "Down",
+      "color": "yellow"
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "direction": "Right",
+      "color": "blue"
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "direction": "Down",
+      "color": "red"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "direction": "Down",
+      "color": "green"
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "direction": "Down",
+      "color": "yellow"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "direction": "Up",
+      "color": "blue"
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "direction": "Down",
+      "color": "red"
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "direction": "Up",
+      "color": "green"
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "direction": "Up",
+      "color": "yellow"
+    }
+  ]
+}

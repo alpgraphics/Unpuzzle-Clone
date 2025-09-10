@@ -1,0 +1,30 @@
+﻿{
+  "moveCount": 5,
+  "boxes": [
+    {
+      "x": 3,
+      "y": 4,
+      "direction": "Right",
+      "color": "yellow"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "direction": "Down",
+      "color": "blue"
+
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "direction": "Left",
+      "color": "red"
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "direction": "Left",
+      "color": "green"
+    }
+  ]
+}

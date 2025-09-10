@@ -1,0 +1,59 @@
+﻿{
+  "moveCount": 12,
+  "boxes": [
+    {
+      "x": 2,
+      "y": 5,
+      "direction": "Right",
+      "color": "blue"
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "direction": "Left",
+      "color": "red"
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "direction": "Down",
+      "color": "green"
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "direction": "Up",
+      "color": "yellow"
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "direction": "Right",
+      "color": "blue"
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "direction": "Left",
+      "color": "red"
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "direction": "Down",
+      "color": "green"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "direction": "Up",
+      "color": "yellow"
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "direction": "Right",
+      "color": "red"
+    }
+  ]
+}
