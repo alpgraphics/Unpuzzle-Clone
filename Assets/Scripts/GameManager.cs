@@ -1,7 +1,8 @@
  using System.Collections;
  using UnityEngine;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
+using TMPro;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,11 +14,12 @@ public class GameManager : MonoBehaviour
     public ScreenManager InGame;
     public ScreenManager Pause;
     
+    [Header("UI")]
     public LevelSelector LevelSelector;
     private Camera _camera;
-
-    [Header("Game Settings")] [SerializeField]
-    private int moves;
+    [SerializeField] private TextMeshPro menutext;
+    [Header("Game Settings")] 
+    [SerializeField] private int moves;
     [SerializeField] private int count=10;
     private bool isProcessing = false;
     
@@ -51,13 +53,15 @@ public class GameManager : MonoBehaviour
         {
             if (obj.CompareTag("Respawn") && obj.scene.isLoaded)
             {
-                Debug.Log("Respawn objesi bulundu: " + obj.name);
                 obj.SetActive(true);
             }
         }
-        
+
+        moves = 1;
         count = 1;
         MainMenuScreen.Setup();
+        menutext.gameObject.SetActive(true);
+        menutext.text = "level "+ LevelSelector.LevelLoad();
         
     }
     
@@ -66,11 +70,13 @@ public class GameManager : MonoBehaviour
     {
         GameObject[] cubes = GameObject.FindGameObjectsWithTag("Respawn");
         foreach (GameObject cube in cubes)
-            {
-               cube.gameObject.SetActive(false); 
-            }
+        {
+            cube.gameObject.SetActive(false); 
+        }
         InGame.gameObject.SetActive(true);
-        LevelSelector.LoadLevel(1);
+        menutext.gameObject.SetActive(false);
+        LevelSelector.LoadLevel(LevelSelector.LevelLoad());
+        
     }
 
     public void EndGame()
@@ -81,7 +87,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-       // if (isProcessing) return;
+        if (isProcessing) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -101,10 +107,10 @@ public class GameManager : MonoBehaviour
                     Debug.Log("This object is not puzzle box won't shoot a ray");
                 }
 
-               // StartCoroutine(InputDelay());
+                StartCoroutine(InputDelay());
             }
         }
-        else if (count == 0)
+        else if (count == 0 && GameObject.FindGameObjectsWithTag("Kutu").Count(k => k.activeInHierarchy) == 0)
         {
             EndGame();
             NextLevelScreen.Setup();
@@ -118,7 +124,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator InputDelay()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.1f);
         isProcessing = false;
     }
         

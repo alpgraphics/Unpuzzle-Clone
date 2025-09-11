@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics;
+
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class ScreenManager : MonoBehaviour
 {
@@ -67,6 +70,7 @@ public class ScreenManager : MonoBehaviour
 
     public void MenuButton()
     {
+        Debug.Log("tıklandı");
         gameObject.SetActive(false);
         LevelSelector.CollectObects();
         GameManager.Instance.MenuScreen();
@@ -76,22 +80,14 @@ public class ScreenManager : MonoBehaviour
     {
         gameObject.SetActive(false);
         LevelSelector.LoadLevel(LevelSelector.levelIndex + 1);
+        LevelSelector.LevelSave();
         GameManager.Instance.InGame.gameObject.SetActive(true);
         
     }
-    
     public void StartGameButton()
     {
         gameObject.SetActive(false);
         GameManager.Instance.StartGame();
     }
-    public void OnEnable()
-    {
-        if (gameObject.CompareTag("GameOver"))
-        {
-            movesLeft = GameManager.Instance.MovesLeft;
-            moves.text = movesLeft.ToString() + " moves left ";
-        }
-        
-    }
+    
 }

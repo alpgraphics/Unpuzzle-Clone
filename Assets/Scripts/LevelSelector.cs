@@ -31,11 +31,11 @@ public class LevelSelector : MonoBehaviour
     private static readonly string Path = Application.dataPath + "/Levels/level_";
     [SerializeField] private ObjectPool objectPool;
 
- 
+
     public void LoadLevel(int level)
     {
         levelIndex = level;
-        
+
         string yol = Path + level + ".json";
         if (File.Exists(yol))
         {
@@ -52,7 +52,7 @@ public class LevelSelector : MonoBehaviour
 
     public Vector3 Correction(string direction) => direction switch
     {
-        "Up" => new Vector3(90,0, 180),
+        "Up" => new Vector3(90, 0, 180),
         "Down" => new Vector3(-90, 0, 0),
         "Left" => new Vector3(0, 90, -90),
         "Right" => new Vector3(180, 90, -90),
@@ -76,24 +76,25 @@ public class LevelSelector : MonoBehaviour
         {
             Debug.LogError("Grid height and width doesn't match with level data");
         }
+
         for (int i = 0; i < currentLevel.boxes.Length; i++)
         {
             GameObject kutu = objectPool.GetObject();
             KutuData data = currentLevel.boxes[i];
-           // kutu.transform.position = new Vector3(data.x, data.y, 0);
 
             kutu.transform.name = "Box_" + i;
             kutu.transform.position = GridController.instance.grid[data.x, data.y].position;
-            
+
             Vector3 rotation = Correction(data.direction);
             kutu.transform.rotation = Quaternion.Euler(rotation);
-            
-      
+
+
             PuzzleBox puzzleBox = kutu.GetComponent<PuzzleBox>();
             puzzleBox.SetObjectPool(objectPool);
             puzzleBox.directions = data.direction;
             puzzleBox.colors = data.color;
         }
+
         GameManager.Instance.MovesLeft = currentLevel.moveCount;
         GameManager.Instance.CountLeft = currentLevel.boxes.Length;
     }
@@ -106,4 +107,23 @@ public class LevelSelector : MonoBehaviour
             objectPool.ReturnObject(cube);
         }
     }
+    
+    public void LevelSave()
+    {
+        string path = Path + "data.json";
+        string json = JsonConvert.SerializeObject(levelIndex); // levelIndex'i kaydet
+        File.WriteAllText(path, json);
+    }
+
+    public int LevelLoad()
+    {
+        string path = Path + "data.json";
+        if (File.Exists(path))
+        {
+            string jsonFile = File.ReadAllText(path);
+            return JsonConvert.DeserializeObject<int>(jsonFile); // int döndür
+        }
+        return 1; // Dosya yoksa level 1 döndür
+    }
 }
+
