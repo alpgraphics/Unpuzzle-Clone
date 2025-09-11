@@ -4092,9 +4092,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameOverScreen, Assembly-CSharp
-        m_MethodName: RestartButton
+      - m_Target: {fileID: 537365964}
+        m_TargetAssemblyTypeName: ScreenManager, Assembly-CSharp
+        m_MethodName: MenuButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

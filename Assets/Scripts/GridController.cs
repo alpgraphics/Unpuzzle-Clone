@@ -25,9 +25,7 @@ public class GridController : MonoBehaviour
         GenerateGridCells();
         CenterGrid();
     }
-
-
-
+    
     private void GenerateGridCells()
     {
         for (int y = 0; y < gridHeight; y++)

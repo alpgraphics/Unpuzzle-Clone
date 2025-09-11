@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int moves;
     [SerializeField] private int count=10;
     private bool isProcessing = false;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
     {
         MenuScreen();
         _camera = Camera.main;
-        //_camera.transform.position = new Vector3(GridController.instance.cellSize * 5, 0, -100);
         GridController.instance.CreateGrid();
     }
 

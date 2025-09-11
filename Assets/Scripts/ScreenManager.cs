@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 public class ScreenManager : MonoBehaviour
 {
@@ -13,11 +14,19 @@ public class ScreenManager : MonoBehaviour
     private int movesLeft;
     public TextMeshProUGUI moves;
     [SerializeField] private Image opacity;
+    private bool GameFinished;
+
+    public void Start()
+    {
+        GameFinished  = false;
+    }
+
     public void Setup()
     {
         gameObject.SetActive(true);
     }
-    
+ 
+
     public void RestartButton()
     {
         gameObject.SetActive(false);
@@ -73,15 +82,29 @@ public class ScreenManager : MonoBehaviour
         Debug.Log("tıklandı");
         gameObject.SetActive(false);
         LevelSelector.CollectObects();
+        GameManager.Instance.InGame.gameObject.SetActive(false);
+        opacity.gameObject.SetActive(false);
         GameManager.Instance.MenuScreen();
         
     }
     public void NextLevelButton()
     {
         gameObject.SetActive(false);
-        LevelSelector.LoadLevel(LevelSelector.levelIndex + 1);
-        LevelSelector.LevelSave();
-        GameManager.Instance.InGame.gameObject.SetActive(true);
+        if (LevelSelector.levelIndex == 6)
+        {
+            
+            int randomInt = Random.Range(0, 7);
+            LevelSelector.LoadLevel(randomInt);
+            GameManager.Instance.InGame.gameObject.SetActive(true);
+            LevelSelector.LevelSave();
+        }
+        else
+        {
+            LevelSelector.LoadLevel(LevelSelector.levelIndex + 1);
+            LevelSelector.LevelSave();
+            GameManager.Instance.InGame.gameObject.SetActive(true);
+        }
+
         
     }
     public void StartGameButton()
@@ -89,5 +112,14 @@ public class ScreenManager : MonoBehaviour
         gameObject.SetActive(false);
         GameManager.Instance.StartGame();
     }
-    
+
+    public void OnEnable()
+    {
+        if (gameObject.CompareTag("GameOver"))
+        {
+            movesLeft = GameManager.Instance.MovesLeft;
+            moves.text = movesLeft.ToString() + " moves left ";
+        }
+        
+    }
 }
