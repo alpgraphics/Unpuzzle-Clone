@@ -1,3 +1,4 @@
+ using System;
  using System.Collections;
  using UnityEngine;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int moves;
     [SerializeField] private int count=10;
     private bool isProcessing = false;  
+    private int frameCounter = 0;
+
     private void Awake()
     {
         if (Instance == null)
@@ -38,10 +41,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        PuzzleBox.OnFunctionCalled += HandleFunctionCall;
         LevelSelector.LevelLoad();
         MenuScreen();
         _camera = Camera.main;
         GridController.instance.CreateGrid();
+        
     }
 
    public void MenuScreen()
@@ -63,8 +68,7 @@ public class GameManager : MonoBehaviour
         menutext.text = "level " + LevelSelector.fakeLevelIndex;
 
     }
-    
-    
+   
     public void StartGame()
     {
         GameObject[] cubes = GameObject.FindGameObjectsWithTag("Respawn");
@@ -83,48 +87,28 @@ public class GameManager : MonoBehaviour
         LevelSelector.CollectObects();
         InGame.gameObject.SetActive(false);
     }
-
-    void Update()
+    
+    void HandleFunctionCall()
     {
-        if (isProcessing) return;
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                isProcessing = true;
-                PuzzleBox puzzleBox = hit.collider.GetComponent<PuzzleBox>();
-
-                if (puzzleBox != null)
-                {
-                    puzzleBox.ShootRay();
-                }
-                else
-                {
-                    Debug.Log("This object is not puzzle box won't shoot a ray");
-                }
-                
-                StartCoroutine(InputDelay());
-            }
-        }
-        else if (count == 0 && GameObject.FindGameObjectsWithTag("Kutu").Count(k => k.activeInHierarchy) == 0)
-        {
-            EndGame();
-            NextLevelScreen.Setup();
-        }
-        else if (moves == 0 && count != 0)
-        {
-            EndGame();
-            GameOverScreen.Setup(); 
-        }
     }
-
-    IEnumerator InputDelay()
-    {
-        yield return new WaitForSeconds(0.12f);
-        isProcessing = false;
+     void Update()
+    {       
+        frameCounter++;
+        if (frameCounter >= 10)
+        { 
+            if (count == 0 && ObjectPool.Instance.activeBoxes.Count == 0)
+            {
+                EndGame();
+                NextLevelScreen.Setup();
+            }
+            else if (moves == 0 && count != 0)
+            { 
+                EndGame();
+                GameOverScreen.Setup(); 
+            } 
+            frameCounter = 0;
+        }
     }
     
     public int MovesLeft

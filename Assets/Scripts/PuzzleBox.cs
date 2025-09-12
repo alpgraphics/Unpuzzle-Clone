@@ -9,21 +9,34 @@ public class PuzzleBox : MonoBehaviour
     [Header("RAY Settings")] [SerializeField]
     private float rayDistance = 10f;
     
-    
+    public static System.Action OnFunctionCalled;
+
     public string directions;
     public string colors;
     private ObjectPool objectPool;
     private ParticlePool particlePool;
     private Renderer myRenderer;
     private MaterialPropertyBlock propBlock;
-    
-    
+
     RaycastHit hit;
+    private Vector3 _defaultPosition;
     
     void Start()
     {   
         myRenderer = GetComponent<Renderer>();
         propBlock = new MaterialPropertyBlock();
+    }
+    
+    public void Initialize(KutuData data,Vector3 rotation, int index, ObjectPool objectPoolIn)
+    {
+        transform.name = "Box_" + index;
+        transform.position = GridController.instance.grid[data.x, data.y].position;
+        transform.rotation = Quaternion.Euler(rotation);
+        
+        _defaultPosition = transform.position;
+        SetObjectPool(objectPoolIn);
+        directions = data.direction;
+        colors = data.color;
     }
 
     public void UpdateColor()
@@ -57,12 +70,16 @@ public class PuzzleBox : MonoBehaviour
 
     private void OnMouseDown()
     {
-        transform.DOPunchScale(Vector3.one * -0.11f, 0.15f, 8, 2f).OnComplete(() => {
+        transform.DOPunchScale(Vector3.one * -0.11f, 0.15f, 8, 2f).OnComplete(() =>{
         });
+        ShootRay();
+        
     }
 
     public void ShootRay()
     {
+            OnFunctionCalled?.Invoke();
+
             Vector3 rayDirection = GetRayDirection();
             Collider myCollider = GetComponent<Collider>();
             Vector3 startPosition = myCollider.bounds.center;
@@ -93,15 +110,16 @@ public class PuzzleBox : MonoBehaviour
     }
     
     
+    
     public void MoveBox(PuzzleBox otherBox = null) 
     {
+
         float stopDistance = GridController.instance.cellSize-0.18f;
         Vector2 startPosition = transform.position;
         Vector2 direction = GetRayDirection();
         Vector3 punchDirection = direction.normalized;
         if (otherBox != null)
         {
-
             
             Vector2 targetPosition = hit.point;
             Sequence sequence = DOTween.Sequence();
@@ -109,12 +127,14 @@ public class PuzzleBox : MonoBehaviour
             {
                 otherBox.ChangeColorToRed();
                 ShakeAllBoxesInDirection(transform.position, direction);
+
             }
             else
             {
                 ParticlePool.Instance.PlayParticle(startPosition, this.transform, direction, 0.2f,colors);
                 transform.DOMove(targetPosition - (direction * stopDistance), 0.2f).SetEase(Ease.InOutQuad).OnComplete(() => { 
                     ShakeAllBoxesInDirection(transform.position, direction);});
+
                 
                 //sequence.Append(transform.DOPunchPosition(-punchDirection*0.15f, 0.2f, 5, 3f));
             }
@@ -130,7 +150,7 @@ public class PuzzleBox : MonoBehaviour
             ParticlePool.Instance.PlayParticle(startPosition,this.transform,direction,0.6f,colors);
             GetComponent<Collider>().enabled = false;
                 transform.DOMove(targetPosition, 0.5f).SetEase(Ease.InSine).OnComplete(() =>
-            {
+            {   
                 GetComponent<Collider>().enabled = true;
                 objectPool.ReturnObject(this.gameObject);
             });
@@ -149,7 +169,11 @@ public class PuzzleBox : MonoBehaviour
             if (box != null && box != this)
             {
                 Debug.Log(dir);
-                box.transform.DOPunchPosition(dir * 0.07f, 0.2f, 8, 3);
+                box.transform.DOKill();
+                box.transform.DOPunchPosition(dir * 0.07f, 0.2f, 8, 3).OnComplete(() =>
+                {
+                    box.ReturnToDefaultPosition();
+                });
                 // Distance kontrolü ile chain reaction
                 if (shakeHit.distance < 0.8f)
                 {
@@ -163,6 +187,12 @@ public class PuzzleBox : MonoBehaviour
             }
         }
     }
+
+    private void ReturnToDefaultPosition()
+    {
+        transform.position = _defaultPosition;
+    }
+
     private Color ConvertColor(string color)
     {
         switch (color)
@@ -206,6 +236,8 @@ public class PuzzleBox : MonoBehaviour
                 return Vector3.zero;
         }
     }
+
+    
 }
 
 

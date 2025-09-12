@@ -2,8 +2,9 @@
 using System;
 using UnityEngine;
 using System.IO;
-using DG.Tweening;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using UnityEditor.PackageManager;
 using Sequence = Unity.VisualScripting.Sequence;
 
@@ -27,7 +28,6 @@ public class KutuData
 public class LevelSelector : MonoBehaviour
 {
     LevelData currentLevel;
-    PuzzleBox puzzleBox;
     public int levelIndex;
     public int fakeLevelIndex;
     private static readonly string Path = Application.dataPath + "/Levels/level_";
@@ -81,32 +81,21 @@ public class LevelSelector : MonoBehaviour
 
         for (int i = 0; i < currentLevel.boxes.Length; i++)
         {
-            GameObject kutu = objectPool.GetObject();
+            var puzzleBox = objectPool.GetObject().GetComponent<PuzzleBox>();
             KutuData data = currentLevel.boxes[i];
-
-            kutu.transform.name = "Box_" + i;
-            kutu.transform.position = GridController.instance.grid[data.x, data.y].position;
-
             Vector3 rotation = Correction(data.direction);
-            kutu.transform.rotation = Quaternion.Euler(rotation);
-
-
-            PuzzleBox puzzleBox = kutu.GetComponent<PuzzleBox>();
-            puzzleBox.SetObjectPool(objectPool);
-            puzzleBox.directions = data.direction;
-            puzzleBox.colors = data.color;
+            puzzleBox.Initialize(data,rotation,i,objectPool);
         }
 
         GameManager.Instance.MovesLeft = currentLevel.moveCount;
         GameManager.Instance.CountLeft = currentLevel.boxes.Length;
     }
 
-    public void CollectObects()
+    public void CollectObects() 
     {
-        GameObject[] cubes = GameObject.FindGameObjectsWithTag("Kutu");
-        foreach (GameObject cube in cubes)
+        for (int i = objectPool.activeBoxes.Count - 1; i >= 0; i--)
         {
-            objectPool.ReturnObject(cube);
+            objectPool.ReturnObject(objectPool.activeBoxes[i]);
         }
     }
     

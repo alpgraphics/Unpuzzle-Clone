@@ -45,6 +45,7 @@ public class ScreenManager : MonoBehaviour
 
     public void PauseButton()
     {   
+        Debug.Log(ObjectPool.Instance.activeBoxes.Count);
 
         opacity.gameObject.SetActive(true);
         opacity.DOFade(0.4f, 0.3f);
