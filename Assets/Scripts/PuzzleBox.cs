@@ -9,7 +9,6 @@ public class PuzzleBox : MonoBehaviour
     [Header("RAY Settings")] [SerializeField]
     private float rayDistance = 10f;
     
-    public static System.Action OnFunctionCalled;
 
     public string directions;
     public string colors;
@@ -27,7 +26,7 @@ public class PuzzleBox : MonoBehaviour
         propBlock = new MaterialPropertyBlock();
     }
     
-    public void Initialize(KutuData data,Vector3 rotation, int index, ObjectPool objectPoolIn)
+    public void Initialize(BoxData data,Vector3 rotation, int index, ObjectPool objectPoolIn)
     {
         transform.name = "Box_" + index;
         transform.position = GridController.instance.grid[data.x, data.y].position;
@@ -73,12 +72,10 @@ public class PuzzleBox : MonoBehaviour
         transform.DOPunchScale(Vector3.one * -0.11f, 0.15f, 8, 2f).OnComplete(() =>{
         });
         ShootRay();
-        
     }
 
     public void ShootRay()
     {
-            OnFunctionCalled?.Invoke();
 
             Vector3 rayDirection = GetRayDirection();
             Collider myCollider = GetComponent<Collider>();
@@ -106,6 +103,7 @@ public class PuzzleBox : MonoBehaviour
                 GameManager.Instance.CountLeft--;
                 MoveBox(null);
                 GameManager.Instance.MovesLeft--;
+
             }
     }
     
@@ -134,9 +132,6 @@ public class PuzzleBox : MonoBehaviour
                 ParticlePool.Instance.PlayParticle(startPosition, this.transform, direction, 0.2f,colors);
                 transform.DOMove(targetPosition - (direction * stopDistance), 0.2f).SetEase(Ease.InOutQuad).OnComplete(() => { 
                     ShakeAllBoxesInDirection(transform.position, direction);});
-
-                
-                //sequence.Append(transform.DOPunchPosition(-punchDirection*0.15f, 0.2f, 5, 3f));
             }
             
             /*

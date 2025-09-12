@@ -5,19 +5,18 @@ using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using UnityEditor.PackageManager;
-using Sequence = Unity.VisualScripting.Sequence;
+
 
 [System.Serializable]
 public class LevelData
 {
     public int moveCount;
-    public KutuData[] boxes;
+    public BoxData[] boxes;
     public int level { get; set; }
     public int fakelevel { get; set; }}
 
 [System.Serializable]
-public class KutuData
+public class BoxData
 {
     public int x;
     public int y;
@@ -38,10 +37,10 @@ public class LevelSelector : MonoBehaviour
     {
         levelIndex = level;
 
-        string yol = Path + level + ".json";
-        if (File.Exists(yol))
+        string path = Path + level + ".json";
+        if (File.Exists(path))
         {
-            string jsonFile = File.ReadAllText(yol);
+            string jsonFile = File.ReadAllText(path);
             currentLevel = JsonConvert.DeserializeObject<LevelData>(jsonFile);
             SetupLevel();
         }
@@ -67,7 +66,7 @@ public class LevelSelector : MonoBehaviour
         {
             for (int i = 0; i < currentLevel.boxes.Length; i++)
             {
-                KutuData data = currentLevel.boxes[i];
+                BoxData data = currentLevel.boxes[i];
                 if (data.y > GridController.instance.gridHeight - 1 || data.x > GridController.instance.gridWidth - 1)
                 {
                     throw new Exception();
@@ -82,7 +81,7 @@ public class LevelSelector : MonoBehaviour
         for (int i = 0; i < currentLevel.boxes.Length; i++)
         {
             var puzzleBox = objectPool.GetObject().GetComponent<PuzzleBox>();
-            KutuData data = currentLevel.boxes[i];
+            BoxData data = currentLevel.boxes[i];
             Vector3 rotation = Correction(data.direction);
             puzzleBox.Initialize(data,rotation,i,objectPool);
         }

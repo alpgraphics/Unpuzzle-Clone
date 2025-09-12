@@ -14,7 +14,8 @@ public class ScreenManager : MonoBehaviour
     private int movesLeft;
     public TextMeshProUGUI moves;
     [SerializeField] private Image opacity;
-    
+
+
 
     public void Setup()
     {
@@ -45,7 +46,6 @@ public class ScreenManager : MonoBehaviour
 
     public void PauseButton()
     {   
-        Debug.Log(ObjectPool.Instance.activeBoxes.Count);
 
         opacity.gameObject.SetActive(true);
         opacity.DOFade(0.4f, 0.3f);
@@ -85,7 +85,6 @@ public class ScreenManager : MonoBehaviour
     }
     public void NextLevelButton()
     {
-        LevelSelector.fakeLevelIndex++;
         gameObject.SetActive(false);
         if (LevelSelector.levelIndex == 6)
         {
@@ -101,6 +100,7 @@ public class ScreenManager : MonoBehaviour
             GameManager.Instance.InGame.gameObject.SetActive(true);
         }
 
+        LevelSelector.fakeLevelIndex++;
 
     }
     public void StartGameButton()

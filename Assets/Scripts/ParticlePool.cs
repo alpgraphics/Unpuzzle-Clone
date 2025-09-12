@@ -16,7 +16,6 @@ public class ParticlePool : MonoBehaviour
     {
         Instance = this;
        
-        // Pool'u doldur
         for (int i = 0; i < poolSize; i++)
         {
             GameObject particle = Instantiate(particlePrefab);
@@ -45,7 +44,6 @@ public class ParticlePool : MonoBehaviour
         pos.z -= 0.5f;
         particle.transform.position = pos;
         
-        // Direction'a göre rotation ayarla
         if (direction == Vector3.up)
         {
             particle.transform.rotation = Quaternion.Euler(90f, 90,0);  
@@ -78,7 +76,6 @@ public class ParticlePool : MonoBehaviour
         }
         else
         {
-            // Pool boşsa yeni oluştur
             return Instantiate(particlePrefab);
         }
     }

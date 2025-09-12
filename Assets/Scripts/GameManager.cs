@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        PuzzleBox.OnFunctionCalled += HandleFunctionCall;
         LevelSelector.LevelLoad();
         MenuScreen();
         _camera = Camera.main;
@@ -61,8 +60,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        moves = 1;
-        count = 1;
+        moves = 4;
+        count = 4;
         MainMenuScreen.Setup();
         menutext.gameObject.SetActive(true);
         menutext.text = "level " + LevelSelector.fakeLevelIndex;
@@ -88,10 +87,6 @@ public class GameManager : MonoBehaviour
         InGame.gameObject.SetActive(false);
     }
     
-    void HandleFunctionCall()
-    {
-
-    }
      void Update()
     {       
         frameCounter++;
