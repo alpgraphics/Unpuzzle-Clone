@@ -1727,7 +1727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelSelector: {fileID: 1206664126}
   moves: {fileID: 1603760844}
-  opacity: {fileID: 0}
+  opacity: {fileID: 128292698}
 --- !u!1 &770732336
 GameObject:
   m_ObjectHideFlags: 0

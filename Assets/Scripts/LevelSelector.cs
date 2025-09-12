@@ -12,7 +12,8 @@ public class LevelData
 {
     public int moveCount;
     public KutuData[] boxes;
-}
+    public int level { get; set; }
+    public int fakelevel { get; set; }}
 
 [System.Serializable]
 public class KutuData
@@ -28,9 +29,10 @@ public class LevelSelector : MonoBehaviour
     LevelData currentLevel;
     PuzzleBox puzzleBox;
     public int levelIndex;
+    public int fakeLevelIndex;
     private static readonly string Path = Application.dataPath + "/Levels/level_";
-    [SerializeField] private ObjectPool objectPool;
-
+    [SerializeField] private ObjectPool objectPool; 
+    
 
     public void LoadLevel(int level)
     {
@@ -111,7 +113,15 @@ public class LevelSelector : MonoBehaviour
     public void LevelSave()
     {
         string path = Path + "data.json";
-        string json = JsonConvert.SerializeObject(levelIndex); // levelIndex'i kaydet
+    
+        // LevelData objesi oluştur
+        LevelData data = new LevelData
+        {
+            level = levelIndex,
+            fakelevel = fakeLevelIndex 
+        };
+    
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(path, json);
     }
 
@@ -121,7 +131,11 @@ public class LevelSelector : MonoBehaviour
         if (File.Exists(path))
         {
             string jsonFile = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<int>(jsonFile); // int döndür
+            LevelData data = JsonConvert.DeserializeObject<LevelData>(jsonFile);
+            
+            fakeLevelIndex = data.fakelevel;
+        
+            return data.level; // level değerini döndür
         }
         return 1; // Dosya yoksa level 1 döndür
     }

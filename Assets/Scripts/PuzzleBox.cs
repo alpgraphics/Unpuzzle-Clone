@@ -55,37 +55,41 @@ public class PuzzleBox : MonoBehaviour
         });
     }
 
-
-    public void ShootRay() 
+    private void OnMouseDown()
     {
-        transform.DOPunchScale(Vector3.one * -0.11f, 0.25f, 8, 2f);
-        Vector3 rayDirection = GetRayDirection();
-        Collider myCollider = GetComponent<Collider>();
-        Vector3 startPosition = myCollider.bounds.center;
-        myCollider.enabled = false;
+        transform.DOPunchScale(Vector3.one * -0.11f, 0.15f, 8, 2f).OnComplete(() => {
+        });
+    }
 
-        Physics.Raycast(startPosition, rayDirection, out hit, rayDistance);
+    public void ShootRay()
+    {
+            Vector3 rayDirection = GetRayDirection();
+            Collider myCollider = GetComponent<Collider>();
+            Vector3 startPosition = myCollider.bounds.center;
+            myCollider.enabled = false;
 
-        Debug.DrawRay(startPosition, rayDirection * rayDistance, Color.red, 1f);
-        myCollider.enabled = true;
+            Physics.Raycast(startPosition, rayDirection, out hit, rayDistance);
 
-        if (hit.collider != null)
-        {
-            Debug.Log($"{gameObject.name} → {hit.collider.name}");
-            GameManager.Instance.MovesLeft--;
+            Debug.DrawRay(startPosition, rayDirection * rayDistance, Color.red, 1f);
+            myCollider.enabled = true;
 
-            PuzzleBox otherBox = hit.collider.GetComponent<PuzzleBox>();
-            if (otherBox != null)
+            if (hit.collider != null)
             {
-                MoveBox(otherBox);
+                Debug.Log($"{gameObject.name} → {hit.collider.name}");
+                GameManager.Instance.MovesLeft--;
+
+                PuzzleBox otherBox = hit.collider.GetComponent<PuzzleBox>();
+                if (otherBox != null)
+                {
+                    MoveBox(otherBox);
+                }
             }
-        }
-        else
-        {
-            GameManager.Instance.CountLeft--;
-            MoveBox(null);
-            GameManager.Instance.MovesLeft--;
-        }
+            else
+            {
+                GameManager.Instance.CountLeft--;
+                MoveBox(null);
+                GameManager.Instance.MovesLeft--;
+            }
     }
     
     
@@ -108,8 +112,8 @@ public class PuzzleBox : MonoBehaviour
             }
             else
             {
-                ParticlePool.Instance.PlayParticle(startPosition, this.transform, direction, 0.3f,colors);
-                transform.DOMove(targetPosition - (direction * stopDistance), 0.3f).SetEase(Ease.InQuad).OnComplete(() => { 
+                ParticlePool.Instance.PlayParticle(startPosition, this.transform, direction, 0.2f,colors);
+                transform.DOMove(targetPosition - (direction * stopDistance), 0.2f).SetEase(Ease.InOutQuad).OnComplete(() => { 
                     ShakeAllBoxesInDirection(transform.position, direction);});
                 
                 //sequence.Append(transform.DOPunchPosition(-punchDirection*0.15f, 0.2f, 5, 3f));
@@ -139,7 +143,6 @@ public class PuzzleBox : MonoBehaviour
         RaycastHit shakeHit;
         if (Physics.Raycast(startPos, dir, out shakeHit, maxDistance))
         {
-            
             PuzzleBox box = shakeHit.collider.GetComponent<PuzzleBox>();
             Debug.DrawRay(startPos, dir, Color.magenta, 2f);
             Debug.Log(shakeHit.collider.name);

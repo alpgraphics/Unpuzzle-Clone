@@ -14,12 +14,7 @@ public class ScreenManager : MonoBehaviour
     private int movesLeft;
     public TextMeshProUGUI moves;
     [SerializeField] private Image opacity;
-    private bool GameFinished;
-
-    public void Start()
-    {
-        GameFinished  = false;
-    }
+    
 
     public void Setup()
     {
@@ -89,11 +84,11 @@ public class ScreenManager : MonoBehaviour
     }
     public void NextLevelButton()
     {
+        LevelSelector.fakeLevelIndex++;
         gameObject.SetActive(false);
         if (LevelSelector.levelIndex == 6)
         {
-            
-            int randomInt = Random.Range(0, 7);
+            int randomInt = Random.Range(1, 7);
             LevelSelector.LoadLevel(randomInt);
             GameManager.Instance.InGame.gameObject.SetActive(true);
             LevelSelector.LevelSave();
@@ -105,7 +100,7 @@ public class ScreenManager : MonoBehaviour
             GameManager.Instance.InGame.gameObject.SetActive(true);
         }
 
-        
+
     }
     public void StartGameButton()
     {

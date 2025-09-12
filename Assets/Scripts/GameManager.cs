@@ -21,8 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")] 
     [SerializeField] private int moves;
     [SerializeField] private int count=10;
-    private bool isProcessing = false;
-
+    private bool isProcessing = false;  
     private void Awake()
     {
         if (Instance == null)
@@ -39,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        LevelSelector.LevelLoad();
         MenuScreen();
         _camera = Camera.main;
         GridController.instance.CreateGrid();
@@ -60,8 +60,8 @@ public class GameManager : MonoBehaviour
         count = 1;
         MainMenuScreen.Setup();
         menutext.gameObject.SetActive(true);
-        menutext.text = "level "+ LevelSelector.LevelLoad();
-        
+        menutext.text = "level " + LevelSelector.fakeLevelIndex;
+
     }
     
     
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("This object is not puzzle box won't shoot a ray");
                 }
-
+                
                 StartCoroutine(InputDelay());
             }
         }
@@ -123,12 +123,10 @@ public class GameManager : MonoBehaviour
 
     IEnumerator InputDelay()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.12f);
         isProcessing = false;
     }
-        
     
-
     public int MovesLeft
     {
         get { return moves; }
