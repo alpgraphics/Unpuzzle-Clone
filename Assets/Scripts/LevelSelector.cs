@@ -29,18 +29,22 @@ public class LevelSelector : MonoBehaviour
     LevelData currentLevel;
     public int levelIndex;
     public int fakeLevelIndex;
-    private static readonly string Path = Application.dataPath + "/Levels/level_";
+    private static readonly string Path = "Levels/level_";
     [SerializeField] private ObjectPool objectPool; 
     
 
     public void LoadLevel(int level)
     {
         levelIndex = level;
+            
+            
+        string path = Path + level;
+        TextAsset textFile = Resources.Load<TextAsset>(path);
 
-        string path = Path + level + ".json";
-        if (File.Exists(path))
+        // path = Path + level + ".json";
+        if (textFile != null)
         {
-            string jsonFile = File.ReadAllText(path);
+            string jsonFile = textFile.text;
             currentLevel = JsonConvert.DeserializeObject<LevelData>(jsonFile);
             SetupLevel();
         }
@@ -100,32 +104,31 @@ public class LevelSelector : MonoBehaviour
     
     public void LevelSave()
     {
-        string path = Path + "data.json";
-    
-        // LevelData objesi oluştur
+        string savePath = Application.persistentDataPath + "/savedata.json";
+
         LevelData data = new LevelData
         {
             level = levelIndex,
             fakelevel = fakeLevelIndex 
         };
-    
+
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText(path, json);
+        File.WriteAllText(savePath, json);
     }
 
     public int LevelLoad()
     {
-        string path = Path + "data.json";
-        if (File.Exists(path))
+        string savePath = Application.persistentDataPath + "/savedata.json";
+    
+        if (File.Exists(savePath))
         {
-            string jsonFile = File.ReadAllText(path);
+            string jsonFile = File.ReadAllText(savePath);
             LevelData data = JsonConvert.DeserializeObject<LevelData>(jsonFile);
-            
-            fakeLevelIndex = data.fakelevel;
         
-            return data.level; // level değerini döndür
+            fakeLevelIndex = data.fakelevel;
+            return data.level;
         }
-        return 1; // Dosya yoksa level 1 döndür
+        return 1; 
     }
 }
 

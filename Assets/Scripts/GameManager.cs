@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")] 
     [SerializeField] private int moves;
     [SerializeField] private int count=10;
-    private bool isProcessing = false;  
     private int frameCounter = 0;
 
     private void Awake()
