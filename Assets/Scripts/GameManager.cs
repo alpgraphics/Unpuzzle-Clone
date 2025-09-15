@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 60;
         if (Instance == null)
         {
             Instance = this;
@@ -58,13 +59,11 @@ public class GameManager : MonoBehaviour
                 obj.SetActive(true);
             }
         }
-
         moves = 4;
         count = 4;
         MainMenuScreen.Setup();
         menutext.gameObject.SetActive(true);
         menutext.text = "level " + LevelSelector.fakeLevelIndex;
-
     }
    
     public void StartGame()

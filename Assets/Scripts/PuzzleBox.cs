@@ -8,7 +8,7 @@ public class PuzzleBox : MonoBehaviour
 {
     [Header("RAY Settings")] [SerializeField]
     private float rayDistance = 10f;
-    
+
 
     public string directions;
     public string colors;
@@ -17,6 +17,8 @@ public class PuzzleBox : MonoBehaviour
     private Renderer myRenderer;
     private MaterialPropertyBlock propBlock;
 
+
+        
     RaycastHit hit;
     private Vector3 _defaultPosition;
     
@@ -49,6 +51,7 @@ public class PuzzleBox : MonoBehaviour
         {
             Debug.Log("Colors are not set");
         }
+        
     }
     
     private void OnEnable()
@@ -133,7 +136,7 @@ public class PuzzleBox : MonoBehaviour
                 transform.DOMove(targetPosition - (direction * stopDistance), 0.2f).SetEase(Ease.InOutQuad).OnComplete(() => { 
                     ShakeAllBoxesInDirection(transform.position, direction);});
             }
-            
+            Settings.Instance?.Haptic();
             /*
             sequence.OnComplete(() => {
                 otherBox.ShootRay();
@@ -154,6 +157,7 @@ public class PuzzleBox : MonoBehaviour
 
     private void ShakeAllBoxesInDirection(Vector3 startPos, Vector3 dir)
     {
+        _defaultPosition = transform.position;
         float maxDistance = 1.2f;
         RaycastHit shakeHit;
         if (Physics.Raycast(startPos, dir, out shakeHit, maxDistance))

@@ -12,8 +12,7 @@ public class LevelData
 {
     public int moveCount;
     public BoxData[] boxes;
-    public int level { get; set; }
-    public int fakelevel { get; set; }}
+}
 
 [System.Serializable]
 public class BoxData
@@ -107,35 +106,12 @@ public class LevelSelector : MonoBehaviour
         PlayerPrefs.SetInt("Level", levelIndex);
         PlayerPrefs.SetInt("FakeLevel", fakeLevelIndex);
         PlayerPrefs.Save();
-
-        /*string savePath = Application.persistentDataPath + "/savedata.json";
-        LevelData data = new LevelData
-        {
-            level = levelIndex,
-            fakelevel = fakeLevelIndex
-        };
-
-        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText(savePath, json);*/
     }
 
     public int LevelLoad()
     {
         fakeLevelIndex = PlayerPrefs.GetInt("FakeLevel", 1);
         return (PlayerPrefs.GetInt("Level", 1));
-        
-
-        /*
-        string savePath = Application.persistentDataPath + "/savedata.json";
-        if (File.Exists(savePath))
-        {
-            string jsonFile = File.ReadAllText(savePath);
-            LevelData data = JsonConvert.DeserializeObject<LevelData>(jsonFile);
-
-            fakeLevelIndex = data.fakelevel;
-            return data.level;
-        }
-        return 1;*/
     }
 }
 

@@ -16,6 +16,10 @@ public class ScreenManager : MonoBehaviour
     [SerializeField] private Image opacity;
 
 
+    private void Start()
+    {
+        Random.InitState(12345);
+    }
 
     public void Setup()
     {
@@ -95,7 +99,7 @@ public class ScreenManager : MonoBehaviour
         gameObject.SetActive(false);
         if (LevelSelector.levelIndex == 6)
         {
-            int randomInt = Random.Range(1, 7);
+            int randomInt = Random.Range(1, 7); 
             LevelSelector.LoadLevel(randomInt);
         }
         else
