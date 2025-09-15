@@ -24,20 +24,20 @@ public class BoxData
     public string color;
 }
 
+
 public class LevelSelector : MonoBehaviour
 {
     LevelData currentLevel;
     public int levelIndex;
     public int fakeLevelIndex;
     private static readonly string Path = "Levels/level_";
-    [SerializeField] private ObjectPool objectPool; 
+    [SerializeField] private ObjectPool objectPool;
     
 
     public void LoadLevel(int level)
     {
         levelIndex = level;
-            
-            
+        
         string path = Path + level;
         TextAsset textFile = Resources.Load<TextAsset>(path);
 
@@ -104,31 +104,38 @@ public class LevelSelector : MonoBehaviour
     
     public void LevelSave()
     {
-        string savePath = Application.persistentDataPath + "/savedata.json";
+        PlayerPrefs.SetInt("Level", levelIndex);
+        PlayerPrefs.SetInt("FakeLevel", fakeLevelIndex);
+        PlayerPrefs.Save();
 
+        /*string savePath = Application.persistentDataPath + "/savedata.json";
         LevelData data = new LevelData
         {
             level = levelIndex,
-            fakelevel = fakeLevelIndex 
+            fakelevel = fakeLevelIndex
         };
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText(savePath, json);
+        File.WriteAllText(savePath, json);*/
     }
 
     public int LevelLoad()
     {
+        fakeLevelIndex = PlayerPrefs.GetInt("FakeLevel", 1);
+        return (PlayerPrefs.GetInt("Level", 1));
+        
+
+        /*
         string savePath = Application.persistentDataPath + "/savedata.json";
-    
         if (File.Exists(savePath))
         {
             string jsonFile = File.ReadAllText(savePath);
             LevelData data = JsonConvert.DeserializeObject<LevelData>(jsonFile);
-        
+
             fakeLevelIndex = data.fakelevel;
             return data.level;
         }
-        return 1; 
+        return 1;*/
     }
 }
 

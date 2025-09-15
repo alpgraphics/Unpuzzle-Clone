@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
             if (count == 0 && ObjectPool.Instance.activeBoxes.Count == 0)
             {
                 EndGame();
+                count = 0; //For debuginn -1 case 
                 NextLevelScreen.Setup();
             }
             else if (moves == 0 && count != 0)

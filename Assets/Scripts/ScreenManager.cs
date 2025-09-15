@@ -74,12 +74,19 @@ public class ScreenManager : MonoBehaviour
     }
 
     public void MenuButton()
-    {
-        Debug.Log("tıklandı");
+    {   
+        ScreenManager pauseobj;
+        pauseobj = GameManager.Instance.Pause;
+        pauseobj.transform.DOMoveY(-7f, 0.4f).OnComplete(() =>
+        {
+            pauseobj.gameObject.SetActive(false);
+            opacity.DOFade(0f, 0.35f);
+            opacity.gameObject.SetActive(false);
+            
+        }); 
         gameObject.SetActive(false);
-        LevelSelector.CollectObects();
         GameManager.Instance.InGame.gameObject.SetActive(false);
-        opacity.gameObject.SetActive(false);
+        LevelSelector.CollectObects();
         GameManager.Instance.MenuScreen();
         
     }
@@ -90,18 +97,15 @@ public class ScreenManager : MonoBehaviour
         {
             int randomInt = Random.Range(1, 7);
             LevelSelector.LoadLevel(randomInt);
-            GameManager.Instance.InGame.gameObject.SetActive(true);
-            LevelSelector.LevelSave();
         }
         else
         {
             LevelSelector.LoadLevel(LevelSelector.levelIndex + 1);
-            LevelSelector.LevelSave();
-            GameManager.Instance.InGame.gameObject.SetActive(true);
         }
-
+        GameManager.Instance.InGame.gameObject.SetActive(true);
         LevelSelector.fakeLevelIndex++;
-
+        LevelSelector.LevelSave();
+        
     }
     public void StartGameButton()
     {
@@ -116,6 +120,5 @@ public class ScreenManager : MonoBehaviour
             movesLeft = GameManager.Instance.MovesLeft;
             moves.text = movesLeft.ToString() + " moves left ";
         }
-        
     }
 }

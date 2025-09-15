@@ -5,6 +5,7 @@ using TMPro;
 
 public class BackGround : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI leveltext; 
     [SerializeField] private TextMeshProUGUI moves;
     private int movesLeft;
     private int lastMovesLeft = -1;
@@ -19,6 +20,9 @@ public class BackGround : MonoBehaviour
             UpdateMovesDisplay();
             lastMovesLeft = movesLeft;
         }
+
+        leveltext.text = "level " + GameManager.Instance.LevelSelector.fakeLevelIndex;
+    
     }
 
     void UpdateMovesDisplay()
