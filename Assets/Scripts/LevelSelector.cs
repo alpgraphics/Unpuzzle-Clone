@@ -20,9 +20,8 @@ public class BoxData
     public int x;
     public int y;
     public string direction;
-    public string color;
+    public BoxColor color;
 }
-
 
 public class LevelSelector : MonoBehaviour
 {

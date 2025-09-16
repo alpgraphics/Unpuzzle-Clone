@@ -9,16 +9,14 @@ public class PuzzleBox : MonoBehaviour
     [Header("RAY Settings")] [SerializeField]
     private float rayDistance = 10f;
 
-
+    [SerializeField] private BoxColorData colorData;
     public string directions;
-    public string colors;
+    private BoxColor boxColor;
     private ObjectPool objectPool;
     private ParticlePool particlePool;
     private Renderer myRenderer;
     private MaterialPropertyBlock propBlock;
-
-
-        
+    
     RaycastHit hit;
     private Vector3 _defaultPosition;
     
@@ -37,14 +35,14 @@ public class PuzzleBox : MonoBehaviour
         _defaultPosition = transform.position;
         SetObjectPool(objectPoolIn);
         directions = data.direction;
-        colors = data.color;
+        boxColor = data.color;
     }
 
     public void UpdateColor()
     {
         if (propBlock != null && myRenderer != null)
         {
-            propBlock.SetColor("_Color", ConvertColor(colors));
+            propBlock.SetColor("_Color", colorData.GetColor(boxColor));
             myRenderer.SetPropertyBlock(propBlock);
         }
         else
@@ -64,7 +62,7 @@ public class PuzzleBox : MonoBehaviour
         // PropertyBlock'u geçici olarak temizle
         myRenderer.SetPropertyBlock(null);
     
-        Color originalColor = ConvertColor(colors);
+        Color originalColor = colorData.GetColor(boxColor);
         myRenderer.material.DOColor(Color.red.gamma, 0.2f).OnComplete(() => {
             myRenderer.material.DOColor(originalColor, 0.8f);
         });
@@ -110,8 +108,6 @@ public class PuzzleBox : MonoBehaviour
             }
     }
     
-    
-    
     public void MoveBox(PuzzleBox otherBox = null) 
     {
 
@@ -132,7 +128,7 @@ public class PuzzleBox : MonoBehaviour
             }
             else
             {
-                ParticlePool.Instance.PlayParticle(startPosition, this.transform, direction, 0.2f,colors);
+                ParticlePool.Instance.PlayParticle(startPosition, this.transform, direction, 0.2f, colorData.GetColor(boxColor));
                 transform.DOMove(targetPosition - (direction * stopDistance), 0.2f).SetEase(Ease.InOutQuad).OnComplete(() => { 
                     ShakeAllBoxesInDirection(transform.position, direction);});
             }
@@ -145,7 +141,7 @@ public class PuzzleBox : MonoBehaviour
         else
         {
             Vector2 targetPosition = startPosition + (direction * (rayDistance+10));
-            ParticlePool.Instance.PlayParticle(startPosition,this.transform,direction,0.6f,colors);
+            ParticlePool.Instance.PlayParticle(startPosition,this.transform,direction,0.6f, colorData.GetColor(boxColor));
             GetComponent<Collider>().enabled = false;
                 transform.DOMove(targetPosition, 0.5f).SetEase(Ease.InSine).OnComplete(() =>
             {   
@@ -186,32 +182,10 @@ public class PuzzleBox : MonoBehaviour
             }
         }
     }
-
+    
     private void ReturnToDefaultPosition()
     {
         transform.position = _defaultPosition;
-    }
-
-    private Color ConvertColor(string color)
-    {
-        switch (color)
-        {
-            case "red": 
-                ColorUtility.TryParseHtmlString("#ff6b6b", out Color redColor);
-                return redColor;
-            case "green": 
-                ColorUtility.TryParseHtmlString("#6ede8a", out Color greenColor);
-                return greenColor;
-            case "yellow": 
-                ColorUtility.TryParseHtmlString("#ffe66d", out Color yellowColor);
-                return yellowColor;
-            case "blue": 
-                ColorUtility.TryParseHtmlString("#4e66cd", out Color blueColor);
-                return blueColor;
-            default:
-                ColorUtility.TryParseHtmlString("#ff6b6b", out Color defaultColor);
-                return defaultColor;
-        }
     }
     
     public void SetObjectPool(ObjectPool pool)

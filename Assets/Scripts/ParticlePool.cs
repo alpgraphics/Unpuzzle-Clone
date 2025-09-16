@@ -24,7 +24,7 @@ public class ParticlePool : MonoBehaviour
         }
     }
     
-    public void PlayParticle(Vector2 startPos, Transform target, Vector3 direction, float duration,string color)
+    public void PlayParticle(Vector2 startPos, Transform target, Vector3 direction, float duration, Color color)
     {
         GameObject particle = GetParticle();
         particle.transform.position = startPos;
@@ -36,7 +36,7 @@ public class ParticlePool : MonoBehaviour
         {
             var main = ps.main;
 
-            Color particleColor = GetColorFromString(color);
+            Color particleColor = color;
             main.startColor = particleColor;
         }
         
@@ -79,17 +79,7 @@ public class ParticlePool : MonoBehaviour
             return Instantiate(particlePrefab);
         }
     }
-    private Color GetColorFromString(string colorName)
-    {
-        switch (colorName.ToLower())
-        {
-            case "red": return Color.red;
-            case "blue": return Color.blue;
-            case "green": return Color.green;
-            case "yellow": return Color.yellow;
-            default: return Color.white;
-        }
-    }
+    
     void ReturnParticle(GameObject particle)
     {
         particle.SetActive(false);

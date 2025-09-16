@@ -37,6 +37,7 @@ public class Settings : MonoBehaviour
         haptic.SetActive(isHapticActive);
 
         Debug.Log(!isHapticActive);
+        Haptic();
         
         PlayerPrefs.SetInt("HapticEnabled", !isHapticActive ? 1 : 0);
         PlayerPrefs.Save();
